@@ -1,0 +1,256 @@
+Token No.1
+
+Token :
+  read
+
+Token Type :
+  READ
+------------------------
+Token No.2
+
+Token :
+  x
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.3
+
+Token :
+  ;
+
+Token Type :
+  SEMICOLON
+------------------------
+Token No.4
+
+Token :
+  if
+
+Token Type :
+  IF
+------------------------
+Token No.5
+
+Token :
+  0
+
+Token Type :
+  NUMBER
+------------------------
+Token No.6
+
+Token :
+  <
+
+Token Type :
+  LESSTHAN
+------------------------
+Token No.7
+
+Token :
+  x
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.8
+
+Token :
+  then
+
+Token Type :
+  THEN
+------------------------
+Token No.9
+
+Token :
+  fact
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.10
+
+Token :
+  :=
+
+Token Type :
+  ASSIGN
+------------------------
+Token No.11
+
+Token :
+  1
+
+Token Type :
+  NUMBER
+------------------------
+Token No.12
+
+Token :
+  ;
+
+Token Type :
+  SEMICOLON
+------------------------
+Token No.13
+
+Token :
+  repeat
+
+Token Type :
+  REPEAT
+------------------------
+Token No.14
+
+Token :
+  fact
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.15
+
+Token :
+  :=
+
+Token Type :
+  ASSIGN
+------------------------
+Token No.16
+
+Token :
+  fact
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.17
+
+Token :
+  *
+
+Token Type :
+  MULT
+------------------------
+Token No.18
+
+Token :
+  x
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.19
+
+Token :
+  ;
+
+Token Type :
+  SEMICOLON
+------------------------
+Token No.20
+
+Token :
+  x
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.21
+
+Token :
+  :=
+
+Token Type :
+  ASSIGN
+------------------------
+Token No.22
+
+Token :
+  x
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.23
+
+Token :
+  -
+
+Token Type :
+  MINUS
+------------------------
+Token No.24
+
+Token :
+  1
+
+Token Type :
+  NUMBER
+------------------------
+Token No.25
+
+Token :
+  until
+
+Token Type :
+  UNTIL
+------------------------
+Token No.26
+
+Token :
+  x
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.27
+
+Token :
+  =
+
+Token Type :
+  EQUAL
+------------------------
+Token No.28
+
+Token :
+  0
+
+Token Type :
+  NUMBER
+------------------------
+Token No.29
+
+Token :
+  ;
+
+Token Type :
+  SEMICOLON
+------------------------
+Token No.30
+
+Token :
+  write
+
+Token Type :
+  WRITE
+------------------------
+Token No.31
+
+Token :
+  fact
+
+Token Type :
+  IDENTIFIER
+------------------------
+Token No.32
+
+Token :
+  end
+
+Token Type :
+  END
+------------------------

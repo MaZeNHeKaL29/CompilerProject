@@ -2,39 +2,20 @@
 
 using namespace std;
 
-/*
-* enum for each token type in tiny language
-*/
-enum tokenType {
-	SEMICOLON, IF, THEN, END, REPEAT, UNTIL, IDENTIFIER, ASSIGN, READ, WRITE, LESSTHAN, MORETHAN, EQUAL,
-	PLUS, MINUS, MULT, DIV, OPENBRACKET, CLOSEDBRACKET, NUMBER, OPENCOMMENT, CLOSEDCOMMENT
-};
-
-
 
 
 /*
 * Array of strings corresponding to tokenType
 */
 std::string tokenTypeStrings[] = {
-	"SEMICOLON", "IF", "THEN", "END", "REPEAT", "UNTIL", "IDENTIFIER", "ASSIGN",
-	"READ", "WRITE", "LESSTHAN", "MORETHAN", "EQUAL", "PLUS", "MINUS", "MULT", "DIV",
+	"SEMICOLON", "IF", "THEN", "ELSE" , "END", "REPEAT", "UNTIL", "IDENTIFIER", "ASSIGN",
+	"READ", "WRITE", "LESSTHAN" , "EQUAL", "PLUS", "MINUS", "MULT", "DIV",
 	"OPENBRACKET", "CLOSEDBRACKET", "NUMBER","OPENCOMMENT","CLOSEDCOMMENT"
 };
 
 
-/*
-* structure for token which has:
-* number if token is number if not number is assigned to zero
-* string for value of token
-* type of token
-*/
-struct token {
-	int number;
-	std::string value;
-	tokenType type;
-};
-
+//array of tokens
+vector<token> tokens;
 
 /*
 * hash function for all reserved word in tiny language
@@ -42,35 +23,31 @@ struct token {
 unordered_map<string, tokenType> reservedWords;
 
 
-//array of tokens
-vector<token> tokens;
-
-
 //string displays all tokens
 string tokenList = "";
 
 void scannerInit(void)
 {
-	reservedWords[";"] = SEMICOLON;
-	reservedWords["if"] = IF;
-	reservedWords["then"] = THEN;
-	reservedWords["end"] = END;
-	reservedWords["repeat"] = REPEAT;
-	reservedWords["until"] = UNTIL;
-	reservedWords[":="] = ASSIGN;
-	reservedWords["read"] = READ;
-	reservedWords["write"] = WRITE;
-	reservedWords["<"] = LESSTHAN;
-	reservedWords[">"] = MORETHAN;
-	reservedWords["="] = EQUAL;
-	reservedWords["+"] = PLUS;
-	reservedWords["-"] = MINUS;
-	reservedWords["*"] = MULT;
-	reservedWords["/"] = DIV;
-	reservedWords["("] = OPENBRACKET;
-	reservedWords[")"] = CLOSEDBRACKET;
-	reservedWords["{"] = OPENCOMMENT;
-	reservedWords["}"] = CLOSEDCOMMENT;
+	reservedWords[";"] = tokenType::SEMICOLON;
+	reservedWords["if"] = tokenType::IF;
+	reservedWords["then"] = tokenType::THEN;
+	reservedWords["else"] = tokenType::ELSE;
+	reservedWords["end"] = tokenType::END;
+	reservedWords["repeat"] = tokenType::REPEAT;
+	reservedWords["until"] = tokenType::UNTIL;
+	reservedWords[":="] = tokenType::ASSIGN;
+	reservedWords["read"] = tokenType::READ;
+	reservedWords["write"] = tokenType::WRITE;
+	reservedWords["<"] = tokenType::LESSTHAN;
+	reservedWords["="] = tokenType::EQUAL;
+	reservedWords["+"] = tokenType::PLUS;
+	reservedWords["-"] = tokenType::MINUS;
+	reservedWords["*"] = tokenType::MULT;
+	reservedWords["/"] = tokenType::DIV;
+	reservedWords["("] = tokenType::OPENBRACKET;
+	reservedWords[")"] = tokenType::CLOSEDBRACKET;
+	reservedWords["{"] = tokenType::OPENCOMMENT;
+	reservedWords["}"] = tokenType::CLOSEDCOMMENT;
 	tokenList = "";
 	tokens.clear();
 }
@@ -78,39 +55,73 @@ void scannerInit(void)
 
 
 
-//convert system string to standard string
-static void System2StdString(System::String^ s, string& os) {
-	using namespace System::Runtime::InteropServices;
-	const char* chars =
-		(const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
-	os = chars;
-	Marshal::FreeHGlobal(System::IntPtr((void*)chars));
+// Convert System::String^ to std::string
+static void System2StdString(System::String^ s, std::string& os) {
+	if (System::String::IsNullOrEmpty(s)) {
+		// Handle the case where the System::String^ is empty or null
+		os.clear(); // Clear the std::string
+	}
+	else {
+		using namespace System::Runtime::InteropServices;
+		const char* chars =
+			(const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
+		os = chars;
+		Marshal::FreeHGlobal(System::IntPtr((void*)chars));
+	}
 }
 
 
 //function to check identifiers and numbers
 void checkIdentifiersNumbers(string value,token &t)
 {
-	/*check if name is number or string assuming
-	* assuming number contains only numbers
-	* and string contains only strings
+	/*check if string name is number or string of character
+	* if it contains both we will ignore it as it is not considered to be token
 	*/
-	if (value[0] >= '0' && value[0] <= '9')
+	bool hasDigit = false;
+	bool hasChar = false;
+	bool notValidToken = false;
+
+	// Check if the string contains both digits and alphabets
+	for (char c : value)
+	{
+		if (c >= '0' && c <= '9')
+		{
+			hasDigit = true;
+		}
+		else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		{
+			hasChar = true;
+		}
+		else
+		{
+			notValidToken = true;
+			break;
+		}
+	}
+
+	if (hasDigit && !hasChar && !notValidToken)
 	{
 #if(DEBUGGING == true)
 		cout << "Number: " << value << endl;
 #endif
-		t = {stoi(value), value, NUMBER};
+		t = {stoi(value), value, tokenType::NUMBER};
 		tokens.push_back(t);
 	}
-	else
+	else if(!hasDigit && hasChar && !notValidToken)
 	{
 #if(DEBUGGING == true)
 		cout << "Identifier: " << value << endl;
 #endif
-		t = {0, value, IDENTIFIER };
+		t = {0, value, tokenType::IDENTIFIER };
 		tokens.push_back(t);
 	}
+	else if (notValidToken || (hasDigit && hasChar))
+	{
+#if(DEBUGGING == true)
+		cout << value << " is not Number nor IDENTIFIER" << endl;
+#endif
+	}
+
 }
 
 
@@ -125,9 +136,9 @@ void scanCode(System::String^ codeContentSystem) {
 	for (int i = 0; i < codeContent.size(); i++) {
 		char ch = codeContent[i];
 
-		//special character found
-		if (ch == ';' || ch == '>' || ch == '<' || ch == '\\' || ch == '*' || ch == '+' || ch == '-'
-			|| ch == '(' || ch == ')' || ch == '=')
+		//special character found or new line
+		if (ch == ';' ||  ch == '<' || ch == '/' || ch == '*' || ch == '+' || ch == '-'
+			|| ch == '(' || ch == ')' || ch == '=' || ch == '\r' || ch == '\r\n' || ch == '\n')
 		{
 			token t;
 			if (value != "")
@@ -136,7 +147,7 @@ void scanCode(System::String^ codeContentSystem) {
 				if (reservedWords.find(value) != reservedWords.end()) {
 #if(DEBUGGING ==  true)
 					cout << "Found reserved word: " << value << " with type " <<
-						tokenTypeStrings[reservedWords[value]] << endl;
+						tokenTypeStrings[static_cast<uint8_t>(reservedWords[value])] << endl;
 #endif
 					t = {0, value, reservedWords[value] };
 					tokens.push_back(t);
@@ -147,14 +158,17 @@ void scanCode(System::String^ codeContentSystem) {
 				}
 				value = "";
 			}
-			//store special character in a token
-			string str(1, ch);
+			if (ch != '\r' && ch != '\n' && ch != '\r\n')
+			{
+				//store special character in a token
+				string str(1, ch);
 #if(DEBUGGING ==  true)
-			cout << "Found reserved word: " << str << " with type " <<
-				tokenTypeStrings[reservedWords[str]] << endl;
+				cout << "Found reserved word: " << str << " with type " <<
+					tokenTypeStrings[static_cast<uint8_t>(reservedWords[value])] << endl;
 #endif
-			token t2 = {0,str,reservedWords[str]};
-			tokens.push_back(t2);
+				token t2 = { 0,str,reservedWords[str] };
+				tokens.push_back(t2);
+			}
 		}
 
 		//ignore whitespaces and check new token
@@ -164,7 +178,7 @@ void scanCode(System::String^ codeContentSystem) {
 			if (reservedWords.find(value) != reservedWords.end()) {
 #if(DEBUGGING ==  true)
 				cout << "Found reserved word: " << value << " with type " <<
-					tokenTypeStrings[reservedWords[value]] << endl;
+					tokenTypeStrings[static_cast<uint8_t>(reservedWords[value])] << endl;
 #endif
 				t = {0,value, reservedWords[value] };
 				tokens.push_back(t);
@@ -180,32 +194,35 @@ void scanCode(System::String^ codeContentSystem) {
 		* if found character : then afterwards we will find = and a new token is found assign(:=)
 		* after that check token before assign
 		*/
-		else if (ch == ':') {
-			token t;
-			if (value != "")
+		else if (i + 1 < codeContent.size() && ch == ':') {
+			if (codeContent[i + 1] == '=')
 			{
-				//check if token is a reserved word or identifier or number
-				if (reservedWords.find(value) != reservedWords.end()) {
+				token t;
+				if (value != "")
+				{
+					//check if token is a reserved word or identifier or number
+					if (reservedWords.find(value) != reservedWords.end()) {
 #if(DEBUGGING ==  true)
-					cout << "Found reserved word: " << value << " with type " <<
-						tokenTypeStrings[reservedWords[value]] << endl;
+						cout << "Found reserved word: " << value << " with type " <<
+							tokenTypeStrings[static_cast<uint8_t>(reservedWords[value])] << endl;
 #endif
-					t = {0, value, reservedWords[value] };
-					tokens.push_back(t);
+						t = { 0, value, reservedWords[value] };
+						tokens.push_back(t);
+					}
+					else {
+						checkIdentifiersNumbers(value, t);
+					}
+					value = "";
 				}
-				else {
-					checkIdentifiersNumbers(value, t);
-				}
-				value = "";
+				//store assign(:=) in a token
+				string str;
+				str.push_back(ch);
+				i++;
+				ch = codeContent[i];
+				str.push_back(ch);
+				token t2 = { 0, str,reservedWords[str] };
+				tokens.push_back(t2);
 			}
-			//store assign(:=) in a token
-			string str;
-			str.push_back(ch);
-			i++;
-			ch = codeContent[i];
-			str.push_back(ch);
-			token t2 = {0, str,reservedWords[str] };
-			tokens.push_back(t2);
 		}
 
 		//found a comment then we will ignore it and store any token before that comment
@@ -217,7 +234,7 @@ void scanCode(System::String^ codeContentSystem) {
 				if (reservedWords.find(value) != reservedWords.end()) {
 #if(DEBUGGING ==  true)
 					cout << "Found reserved word: " << value << " with type " <<
-						tokenTypeStrings[reservedWords[value]] << endl;
+						tokenTypeStrings[static_cast<uint8_t>(reservedWords[value])] << endl;
 #endif
 					t = {0, value, reservedWords[value] };
 					tokens.push_back(t);
@@ -256,7 +273,7 @@ void scanCode(System::String^ codeContentSystem) {
 		if (reservedWords.find(value) != reservedWords.end()) {
 #if(DEBUGGING ==  true)
 			cout << "Found reserved word: " << value << " with type " <<
-				tokenTypeStrings[reservedWords[value]] << endl;
+				tokenTypeStrings[static_cast<uint8_t>(reservedWords[value])] << endl;
 #endif
 			t = {0, value, reservedWords[value] };
 			tokens.push_back(t);
@@ -274,9 +291,10 @@ void scanCode(System::String^ codeContentSystem) {
 #endif
 
 	int i = 1;
+/*
 	for (const token& t : tokens) {
 #if(DEBUGGING == true)
-		std::wcout << "Token No." << i << std::endl << std::endl;
+		std::cout << "Token No." << i << std::endl << std::endl;
 		std::cout << "Token :" << std::endl << t.value << std::endl << std::endl;
 		std::cout << "Token Type :" << std::endl << tokenTypeStrings[t.type] << std::endl;
 		std::cout << "------------------------" << std::endl;
@@ -301,6 +319,18 @@ void scanCode(System::String^ codeContentSystem) {
 		tokenList += "\r\n";
 		i++;
 	}
+*/
+	for (const token& t : tokens) {
+#if(DEBUGGING == true)
+		std::cout << t.value << " , " << tokenTypeStrings[static_cast<uint8_t>(t.type)] << std::endl << std::endl;
+#endif
+		tokenList += t.value;
+		tokenList += " , ";
+		tokenList += tokenTypeStrings[static_cast<uint8_t>(t.type)];
+		tokenList += "\r\n";
+		tokenList += "\r\n";
+		i++;
+	}
 
 }
 
@@ -312,4 +342,9 @@ void printTokens(System::String^& tokenListSystem)
 	ofstream out(filename + ".txt");
 	out << tokenList;
 	out.close();
+}
+
+std::vector<token> getTokens(void)
+{
+	return tokens;
 }

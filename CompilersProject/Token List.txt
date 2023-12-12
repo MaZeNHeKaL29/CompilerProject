@@ -1,256 +1,110 @@
-Token No.1
+read , READ
 
-Token :
-  read
+x , IDENTIFIER
 
-Token Type :
-  READ
-------------------------
-Token No.2
+; , SEMICOLON
 
-Token :
-  x
+if , IF
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.3
+0 , NUMBER
 
-Token :
-  ;
+< , LESSTHAN
 
-Token Type :
-  SEMICOLON
-------------------------
-Token No.4
+x , IDENTIFIER
 
-Token :
-  if
+then , THEN
 
-Token Type :
-  IF
-------------------------
-Token No.5
+fact , IDENTIFIER
 
-Token :
-  0
+:= , ASSIGN
 
-Token Type :
-  NUMBER
-------------------------
-Token No.6
+1 , NUMBER
 
-Token :
-  <
+; , SEMICOLON
 
-Token Type :
-  LESSTHAN
-------------------------
-Token No.7
+repeat , REPEAT
 
-Token :
-  x
+fact , IDENTIFIER
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.8
+:= , ASSIGN
 
-Token :
-  then
+fact , IDENTIFIER
 
-Token Type :
-  THEN
-------------------------
-Token No.9
+* , MULT
 
-Token :
-  fact
+x , IDENTIFIER
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.10
+; , SEMICOLON
 
-Token :
-  :=
+x , IDENTIFIER
 
-Token Type :
-  ASSIGN
-------------------------
-Token No.11
+:= , ASSIGN
 
-Token :
-  1
+x , IDENTIFIER
 
-Token Type :
-  NUMBER
-------------------------
-Token No.12
+- , MINUS
 
-Token :
-  ;
+1 , NUMBER
 
-Token Type :
-  SEMICOLON
-------------------------
-Token No.13
+until , UNTIL
 
-Token :
-  repeat
+x , IDENTIFIER
 
-Token Type :
-  REPEAT
-------------------------
-Token No.14
+= , EQUAL
 
-Token :
-  fact
+0 , NUMBER
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.15
++ , PLUS
 
-Token :
-  :=
+1 , NUMBER
 
-Token Type :
-  ASSIGN
-------------------------
-Token No.16
+* , MULT
 
-Token :
-  fact
+2 , NUMBER
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.17
+* , MULT
 
-Token :
-  *
+2 , NUMBER
 
-Token Type :
-  MULT
-------------------------
-Token No.18
+* , MULT
 
-Token :
-  x
+2 , NUMBER
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.19
+* , MULT
 
-Token :
-  ;
+2 , NUMBER
 
-Token Type :
-  SEMICOLON
-------------------------
-Token No.20
+* , MULT
 
-Token :
-  x
+( , OPENBRACKET
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.21
+2 , NUMBER
 
-Token :
-  :=
+- , MINUS
 
-Token Type :
-  ASSIGN
-------------------------
-Token No.22
+2 , NUMBER
 
-Token :
-  x
+) , CLOSEDBRACKET
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.23
+- , MINUS
 
-Token :
-  -
+6 , NUMBER
 
-Token Type :
-  MINUS
-------------------------
-Token No.24
+/ , DIV
 
-Token :
-  1
+2 , NUMBER
 
-Token Type :
-  NUMBER
-------------------------
-Token No.25
+; , SEMICOLON
 
-Token :
-  until
+write , WRITE
 
-Token Type :
-  UNTIL
-------------------------
-Token No.26
+fact , IDENTIFIER
 
-Token :
-  x
+else , ELSE
 
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.27
+write , WRITE
 
-Token :
-  =
+x , IDENTIFIER
 
-Token Type :
-  EQUAL
-------------------------
-Token No.28
+end , END
 
-Token :
-  0
-
-Token Type :
-  NUMBER
-------------------------
-Token No.29
-
-Token :
-  ;
-
-Token Type :
-  SEMICOLON
-------------------------
-Token No.30
-
-Token :
-  write
-
-Token Type :
-  WRITE
-------------------------
-Token No.31
-
-Token :
-  fact
-
-Token Type :
-  IDENTIFIER
-------------------------
-Token No.32
-
-Token :
-  end
-
-Token Type :
-  END
-------------------------
